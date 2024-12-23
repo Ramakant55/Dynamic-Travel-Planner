@@ -83,7 +83,7 @@ const TravelPlanner = () => {
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             placeholder="Enter location"
-            className="p-3 border border-gray-300 rounded-md md:w-full md:max-w-md mx-auto focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="p-3 border border-gray-300 rounded-md w-full md:max-w-md mx-auto focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
