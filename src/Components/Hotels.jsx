@@ -56,7 +56,7 @@ const Hotels = () => {
           <div
             key={hotel.id}
             className={`bg-white shadow-md shadow-black rounded-lg overflow-hidden transform transition-all duration-100 ease-in-out ${
-              mounted ? "translate-x-0 opacity-100" : "opacity-0 translate-x-20"
+              mounted ? "translate-x-0 opacity-100" : "opacity-0 translate-x-0"
             }`}
             style={{ transitionDelay: `${index * 800}ms` }}
           >
