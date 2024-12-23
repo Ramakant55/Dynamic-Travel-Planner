@@ -119,14 +119,14 @@ const TravelPlanner = () => {
           <label className="text-sm font-medium">Check In</label>
           <input
             type="date"
-            className="border border-gray-300 rounded-md p-2 focus:outline-none"
+            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
           />
         </div>
         <div className="flex flex-1 flex-col px-2">
           <label className="text-sm font-medium">Check Out</label>
           <input
             type="date"
-            className="border border-gray-300 rounded-md p-2 focus:outline-none"
+            className="border border-gray-300 w-full rounded-md p-2 focus:outline-none"
           />
         </div>
         <div className="flex flex-1 flex-col px-2">
@@ -141,7 +141,7 @@ const TravelPlanner = () => {
 
         
 
-        <button className="bg-red-500  transform transition ease duration-300 hover:translate-y-[-4px] hover:bg-red-600 text-white px-3 py-2 mt-5 rounded-md font-medium" 
+        <button className="bg-red-500  transform transition ease duration-300 hover:translate-y-[-4px] hover:bg-red-600 text-white px-4 py-2 mt-5 md:ml-0 ml-2 rounded-md font-medium" 
          onClick={handleSearch} >
           Search
         </button>
