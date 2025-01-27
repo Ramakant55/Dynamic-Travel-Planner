@@ -1,13 +1,14 @@
-import {React,useState} from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
-      const [isVisible, setIsVisible] = useState(true);
-      const navigate = useNavigate();
-    
-     // Function to open a popup window
+  const [isVisible, setIsVisible] = useState(true);
+  const [passwordVisible, setPasswordVisible] = useState(false); // State for toggling password visibility
+  const navigate = useNavigate();
+
+  // Function to open a popup window
   const openPopup = (url) => {
     const width = 500;
     const height = 600;
@@ -20,7 +21,38 @@ const Signup = () => {
       `width=${width},height=${height},top=${top},left=${left},resizable=no`
     );
   };
+
+  // Function to handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const email = e.target.email.value; // Get the email value
+    const password = e.target.password.value; // Get the password value
+
+    try {
+      const response = await fetch("http://localhost:5000/api/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }), // Send data to the backend
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        alert(data.message); // Show success message
+        navigate("/"); // Redirect to the home page or login page
+      } else {
+        alert(data.message); // Show error message
+      }
+    } catch (error) {
+      console.error("Error during signup:", error);
+      alert("An error occurred. Please try again.");
+    }
+  };
+
   if (!isVisible) return null;
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white rounded-lg shadow-lg md:w-[30rem] w-[20rem] h-[35rem] p-6 relative">
@@ -66,24 +98,28 @@ const Signup = () => {
         </div>
 
         {/* Email and Password Fields */}
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <input
             type="email"
+            name="email"
             placeholder="Email"
             className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
           />
           <div className="relative">
             <input
-              type="password"
+              type={passwordVisible ? "text" : "password"} // Toggle password visibility
+              name="password"
               placeholder="Password"
               className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
             />
             <button
               type="button"
               className="absolute inset-y-0 right-3 text-gray-500 hover:text-gray-700"
-              onClick={() => console.log("Toggle password visibility")}
+              onClick={() => setPasswordVisible(!passwordVisible)} // Toggle visibility
             >
-              &#x1f441;
+              {passwordVisible ? "🙈" : "👁️"} {/* Icon toggles */}
             </button>
           </div>
           <button
@@ -96,7 +132,7 @@ const Signup = () => {
 
         {/* Log In Link */}
         <p className="text-center text-sm text-gray-600 mt-6">
-          Already have an account?{' '}
+          Already have an account?{" "}
           <a href="Login" className="text-blue-600 hover:underline">
             Log in
           </a>

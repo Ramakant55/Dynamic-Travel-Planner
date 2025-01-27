@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [isVisible, setIsVisible] = useState(true);
+  const [passwordVisible, setPasswordVisible] = useState(false); // State for toggling password visibility
   const navigate = useNavigate();
 
   const openPopup = (url) => {
@@ -20,6 +21,35 @@ const Login = () => {
     );
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const email = e.target.email.value; // Get email input value
+    const password = e.target.password.value; // Get password input value
+
+    try {
+      const response = await fetch("http://localhost:5000/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }), // Send email and password to the backend
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert(data.message); // Display success message from the backend
+        navigate("/dashboard"); // Redirect to a dashboard or home page
+      } else {
+        alert(data.message); // Display error message
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+      alert("An error occurred. Please try again.");
+    }
+  };
+
   if (!isVisible) return null;
 
   return (
@@ -31,17 +61,14 @@ const Login = () => {
           onClick={() => {
             setIsVisible(false);
             navigate("/");
-          
           }}
-          
-          
         >
           &times;
         </button>
 
         {/* Modal Title */}
         <h2 className="text-2xl font-semibold text-center mb-6 mt-8">
-          Log in to Wanderlog
+          Log in to TravelPlanner
         </h2>
 
         {/* Social Login Buttons */}
@@ -77,24 +104,28 @@ const Login = () => {
         </div>
 
         {/* Email and Password Fields */}
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <input
             type="email"
+            name="email"
             placeholder="Email"
             className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
           />
           <div className="relative">
             <input
-              type="password"
+              type={passwordVisible ? "text" : "password"} // Toggle password visibility
+              name="password"
               placeholder="Password"
               className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
             />
             <button
               type="button"
               className="absolute inset-y-0 right-3 text-gray-500 hover:text-gray-700"
-              onClick={() => console.log("Toggle password visibility")}
+              onClick={() => setPasswordVisible(!passwordVisible)}
             >
-              &#x1f441;
+              {passwordVisible ? "🙈" : "👁️"} {/* Toggle icon */}
             </button>
           </div>
           <a
